@@ -73,6 +73,36 @@ nav {
   }
 }
 
+// Dropdown styling
+.sidebar-list li.dropdown-item {
+  position: relative;
+
+  .dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    font-size: 1.2em;
+  }
+}
+
+// Submenu styling
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: $sidebar-accent;
+  border-radius: 6px;
+  overflow: hidden;
+
+  li {
+    padding: 0.8rem 1.2rem 0.8rem 2.5rem;
+    font-size: 0.95rem;
+
+    mat-icon {
+      font-size: 1.1em;
+    }
+  }
+}
+
 // Special styling for non-functional items
 .sidebar-list li.eventos-academicos {
   opacity: 0.8;

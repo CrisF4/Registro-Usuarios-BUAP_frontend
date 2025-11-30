@@ -11,6 +11,7 @@ export class SidebarUserComponent implements OnInit {
   mobileOpen = false;
   isMobileView = window.innerWidth < 900;
   userRole: string = '';
+  eventosDropdownOpen = false;
 
   constructor(
     private router: Router,
@@ -36,6 +37,10 @@ export class SidebarUserComponent implements OnInit {
 
   closeSidebar() {
     this.mobileOpen = false;
+  }
+
+  toggleEventosDropdown() {
+    this.eventosDropdownOpen = !this.eventosDropdownOpen;
   }
 
   logout() {

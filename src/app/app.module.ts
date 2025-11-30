@@ -51,6 +51,10 @@ import { NavbarUserComponent } from './partials/navbar-user/navbar-user.componen
 import { SidebarUserComponent } from './partials/sidebar-user/sidebar-user.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.component';
+import { RegistroEventosComponent } from './partials/registro-eventos/registro-eventos.component';
+import { EventosAcademicosScreenComponent } from './screens/eventos-academicos-screen/eventos-academicos-screen.component';
+import { EliminarEventoModalComponent } from './modals/eliminar-evento-modal/eliminar-evento-modal.component';
+import { RegistroEventosScreenComponent } from './screens/registro-eventos-screen/registro-eventos-screen.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +73,11 @@ import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.
     NavbarUserComponent,
     SidebarUserComponent,
     EliminarUserModalComponent,
-    GraficasScrenComponent
+    GraficasScrenComponent,
+    RegistroEventosComponent,
+    EventosAcademicosScreenComponent,
+    EliminarEventoModalComponent,
+    RegistroEventosScreenComponent
   ],
   imports: [
     BrowserModule,

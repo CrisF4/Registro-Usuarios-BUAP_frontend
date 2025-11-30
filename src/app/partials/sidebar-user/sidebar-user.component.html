@@ -38,12 +38,24 @@
           <span>Gráficas</span>
         </li>
 
-        <!-- Eventos Académicos - Available for administrators and teachers -->
-        <li *ngIf="canSeeTeacherItems()" routerLink="/eventos-academicos" routerLinkActive="active"
-          class="eventos-academicos" (click)="closeSidebar()">
+        <!-- Eventos Académicos - Dropdown menu -->
+        <li *ngIf="canSeeStudentItems()" class="dropdown-item" (click)="toggleEventosDropdown()">
           <mat-icon>event</mat-icon>
           <span>Eventos Académicos</span>
+          <mat-icon class="dropdown-icon">{{ eventosDropdownOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
         </li>
+
+        <!-- Submenu de Eventos Académicos -->
+        <ul class="submenu" *ngIf="eventosDropdownOpen">
+          <li *ngIf="canSeeAdminItems()" routerLink="/registro-eventos" routerLinkActive="active" (click)="closeSidebar()">
+            <mat-icon>add_circle</mat-icon>
+            <span>Registro de Eventos</span>
+          </li>
+          <li routerLink="/eventos-academicos" routerLinkActive="active" (click)="closeSidebar()">
+            <mat-icon>list</mat-icon>
+            <span>Lista de Eventos</span>
+          </li>
+        </ul>
       </ul>
       <button mat-flat-button color="warn" class="logout-btn" (click)="logout()">
         <mat-icon>logout</mat-icon>

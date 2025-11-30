@@ -9,6 +9,8 @@ import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-scre
 import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.component';
 import { AdminsScreenComponent } from './screens/admins-screen/admins-screen.component';
 import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.component';
+import { EventosAcademicosScreenComponent } from './screens/eventos-academicos-screen/eventos-academicos-screen.component';
+import { RegistroEventosScreenComponent } from './screens/registro-eventos-screen/registro-eventos-screen.component';
 
 const routes: Routes = [
   {
@@ -29,7 +31,11 @@ const routes: Routes = [
       { path: 'administradores', component: AdminsScreenComponent},
       { path: 'maestros', component: MaestrosScreenComponent},
       { path: 'alumnos', component: AlumnosScreenComponent},
-      { path: 'graficas', component: GraficasScrenComponent}
+      { path: 'graficas', component: GraficasScrenComponent},
+      { path: 'eventos-academicos', component: EventosAcademicosScreenComponent},
+      { path: 'registro-eventos', component: RegistroEventosScreenComponent},
+      { path: 'registro-eventos/:id', component: RegistroEventosScreenComponent}
+
     ]
   }
 ];

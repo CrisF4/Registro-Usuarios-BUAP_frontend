@@ -1,0 +1,53 @@
+.modal-container {
+  padding: 1rem;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .warning-icon {
+      color: #f44336;
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #333;
+    }
+  }
+}
+
+mat-dialog-content {
+  padding: 1rem 0;
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .warning-text {
+    color: #f44336;
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  strong {
+    color: #333;
+    font-weight: 600;
+  }
+}
+
+mat-dialog-actions {
+  padding-top: 1rem;
+  gap: 1rem;
+
+  button {
+    padding: 0.5rem 1.5rem;
+  }
+}
