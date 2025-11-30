@@ -13,7 +13,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class AdministradoresService {
+export class AlumnosService {
 
   constructor(
     private http: HttpClient,
@@ -22,29 +22,30 @@ export class AdministradoresService {
     private facadeService: FacadeService
   ) { }
 
-  public esquemaAdmin() {
+  public esquemaAlumno() {
     return {
       'rol': '',
-      'clave_admin': '',
+      'clave_alumno': '',
       'first_name': '',
       'last_name': '',
       'email': '',
       'password': '',
       'confirmar_password': '',
-      'telefono': '',
+      'fecha_nacimiento': '',
+      'curp': '',
       'rfc': '',
       'edad': '',
+      'telefono': '',
       'ocupacion': ''
     }
   }
 
-  //Validación para el formulario
-  public validarAdmin(data: any, editar: boolean) {
-    console.log("Validando admin... ", data);
+  public validarAlumno(data: any, editar: boolean) {
+    console.log("Validando alumno... ", data);
     let error: any = {};
     //Validaciones
-    if (!this.validatorService.required(data["clave_admin"])) {
-      error["clave_admin"] = this.errorService.required;
+    if (!this.validatorService.required(data["clave_alumno"])) {
+      error["clave_alumno"] = this.errorService.required;
     }
 
     if (!this.validatorService.required(data["first_name"])) {
@@ -60,7 +61,7 @@ export class AdministradoresService {
     } else if (!this.validatorService.max(data["email"], 40)) {
       error["email"] = this.errorService.max(40);
     } else if (!this.validatorService.email(data['email'])) {
-      error['email'] = this.errorService.email;
+      error["email"] = this.errorService.email;
     }
 
     if (!editar) {
@@ -71,6 +72,20 @@ export class AdministradoresService {
       if (!this.validatorService.required(data["confirmar_password"])) {
         error["confirmar_password"] = this.errorService.required;
       }
+    }
+
+    if (!this.validatorService.required(data["fecha_nacimiento"])) {
+      error["fecha_nacimiento"] = this.errorService.required;
+    }
+
+    if (!this.validatorService.required(data["curp"])) {
+      error["curp"] = this.errorService.required;
+    } else if (!this.validatorService.min(data["curp"], 18)) {
+      error["curp"] = this.errorService.min(18);
+      alert("La longitud de caracteres de la CURP es menor, deben ser 18");
+    } else if (!this.validatorService.max(data["curp"], 18)) {
+      error["curp"] = this.errorService.max(18);
+      alert("La longitud de caracteres de la CURP es mayor, deben ser 18");
     }
 
     if (!this.validatorService.required(data["rfc"])) {
@@ -104,8 +119,8 @@ export class AdministradoresService {
   }
 
   //Aquí van los servicios HTTP
-  //Servicio para registrar un nuevo usuario
-  public registrarAdmin (data: any): Observable <any>{
+  //Servicio para registrar un nuevo alumno
+  public registrarAlumno(data: any): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers = new HttpHeaders;
     if (token) {
@@ -113,38 +128,24 @@ export class AdministradoresService {
     } else {
       headers = new HttpHeaders({'Content-Type': 'application/json'});
     }
-    return this.http.post<any>(`${environment.url_api}/admin/`,data, { headers });
+    return this.http.post<any>(`${environment.url_api}/alumno/`, data, { headers });
   }
 
-  // Petición para obtener la lista de administradores
-  public obtenerListaAdmins(): Observable<any> {
+   //Servicio para obtener la lista de alumnos
+  public obtenerListaAlumnos(): Observable<any>{
+    // Verificamos si existe el token de sesión
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
       headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
     } else {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
-
     }
-    return this.http.get<any>(`${environment.url_api}/lista-admins/`, { headers });
+    return this.http.get<any>(`${environment.url_api}/lista-alumnos/`, { headers });
   }
 
-  // Petición para obtener un administrador por su ID
-  public obtenerAdminPorID(idAdmin: number): Observable<any> {
-    const token = this.facadeService.getSessionToken();
-    let headers: HttpHeaders;
-    if (token) {
-      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
-    } else {
-      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
-    }
-    return this.http.get<any>(`${environment.url_api}/admin/?id=${idAdmin}`, { headers });
-  }
-
-  // Petición para actualizar un administrador
-  public actualizarAdmin(data: any): Observable<any> {
+  // Petición para obtener un alumno por su ID
+  public obtenerAlumnoPorID(idAlumno: number): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
@@ -153,11 +154,11 @@ export class AdministradoresService {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       console.log("No se encontró el token del usuario");
     }
-    return this.http.put<any>(`${environment.url_api}/admin/`, data, { headers });
+    return this.http.get<any>(`${environment.url_api}/alumno/?id=${idAlumno}`, { headers });
   }
 
-  // Petición para eliminar un administrador
-  public eliminarAdmin(idAdmin: number): Observable<any> {
+  // Petición para actualizar un alumno
+  public actualizarAlumno(data: any): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
@@ -166,19 +167,20 @@ export class AdministradoresService {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       console.log("No se encontró el token del usuario");
     }
-    return this.http.delete<any>(`${environment.url_api}/admin/?id=${idAdmin}`, { headers });
+    return this.http.put<any>(`${environment.url_api}/alumno/`, data, { headers });
   }
 
-  // Servicio para obtener el total de usuarios registrados por rol
-  public getTotalUsuarios(): Observable<any>{
+  //Eliminar alumno
+  public eliminarAlumno(idAlumno: number): Observable<any>{
+    // Verificamos si existe el token de sesión
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
       headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
     } else {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
     }
-    return this.http.get<any>(`${environment.url_api}/total-usuarios/`, { headers });
+    return this.http.delete<any>(`${environment.url_api}/alumno/?id=${idAlumno}`, { headers });
   }
 }
+

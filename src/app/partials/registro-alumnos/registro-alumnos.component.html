@@ -9,9 +9,9 @@
       </div>
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>ID/Matrícula</mat-label>
-        <input matInput [(ngModel)]="alumno.matricula" mask="000000000" name="id" placeholder="Escribe ID o matrícula">
+        <input matInput [(ngModel)]="alumno.clave_alumno" mask="000000000" name="id" placeholder="Escribe ID o matrícula" (keypress)="soloNumeros($event)">
       </mat-form-field>
-      <div *ngIf="errors.matricula" class="invalid-feedback">{{ errors.matricula }}</div>
+      <div *ngIf="errors.clave_alumno" class="invalid-feedback">{{ errors.clave_alumno }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre</mat-label>
@@ -56,14 +56,14 @@
 
       <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
         <mat-label>CURP</mat-label>
-        <input matInput maxlength="18" [(ngModel)]="alumno.curp" placeholder="Escribe CURP" style="text-transform: uppercase;">
+        <input matInput maxlength="18" [(ngModel)]="alumno.curp" placeholder="Escribe CURP" style="text-transform: uppercase;" (keypress)="alfanumerico($event)">
         <mat-hint align="end">{{alumno.curp?.length || 0}}/18</mat-hint>
       </mat-form-field>
       <div *ngIf="errors.curp" class="invalid-feedback">{{ errors.curp }}</div>
 
       <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
           <mat-label>RFC</mat-label>
-          <input matInput minlength="12" maxlength="13" [(ngModel)]="alumno.rfc" placeholder="Escribe RFC" style="text-transform: uppercase;">
+          <input matInput minlength="12" maxlength="13" [(ngModel)]="alumno.rfc" placeholder="Escribe RFC" style="text-transform: uppercase;" (keypress)="soloLetrasRFC($event)">
           <mat-hint align="end">{{alumno.rfc?.length || 0}}/13</mat-hint>
       </mat-form-field>
       <div *ngIf="errors.rfc" class="invalid-feedback">{{ errors.rfc }}</div>

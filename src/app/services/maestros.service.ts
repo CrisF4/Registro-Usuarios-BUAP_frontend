@@ -13,7 +13,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class AdministradoresService {
+export class MaestrosService {
 
   constructor(
     private http: HttpClient,
@@ -22,29 +22,30 @@ export class AdministradoresService {
     private facadeService: FacadeService
   ) { }
 
-  public esquemaAdmin() {
+  public esquemaMaestro() {
     return {
       'rol': '',
-      'clave_admin': '',
+      'clave_maestro': '',
       'first_name': '',
       'last_name': '',
       'email': '',
       'password': '',
       'confirmar_password': '',
+      'fecha_nacimiento': '',
       'telefono': '',
       'rfc': '',
-      'edad': '',
-      'ocupacion': ''
+      'cubiculo': '',
+      'area_investigacion': '',
+      'materias_json': [] //Cuidar de que el arreglo este vacio para evitar errores de consola 'error reading push'
     }
   }
 
-  //Validación para el formulario
-  public validarAdmin(data: any, editar: boolean) {
-    console.log("Validando admin... ", data);
+  public validarMaestro(data: any, editar: boolean) {
+    console.log("Validando maestro... ", data);
     let error: any = {};
     //Validaciones
-    if (!this.validatorService.required(data["clave_admin"])) {
-      error["clave_admin"] = this.errorService.required;
+    if (!this.validatorService.required(data["clave_maestro"])) {
+      error["clave_maestro"] = this.errorService.required;
     }
 
     if (!this.validatorService.required(data["first_name"])) {
@@ -60,7 +61,7 @@ export class AdministradoresService {
     } else if (!this.validatorService.max(data["email"], 40)) {
       error["email"] = this.errorService.max(40);
     } else if (!this.validatorService.email(data['email'])) {
-      error['email'] = this.errorService.email;
+      error["email"] = this.errorService.email;
     }
 
     if (!editar) {
@@ -73,6 +74,14 @@ export class AdministradoresService {
       }
     }
 
+    if (!this.validatorService.required(data["fecha_nacimiento"])) {
+      error["fecha_nacimiento"] = this.errorService.required;
+    }
+
+    if(!this.validatorService.required(data["telefono"])){
+      error["telefono"] = this.errorService.required;
+    }
+
     if (!this.validatorService.required(data["rfc"])) {
       error["rfc"] = this.errorService.required;
     } else if (!this.validatorService.min(data["rfc"], 12)) {
@@ -82,30 +91,24 @@ export class AdministradoresService {
       error["rfc"] = this.errorService.max(13);
       alert("La longitud de caracteres deL RFC es mayor, deben ser 13");
     }
-
-    if (!this.validatorService.required(data["edad"])) {
-      error["edad"] = this.errorService.required;
-    } else if (!this.validatorService.numeric(data["edad"])) {
-      alert("El formato es solo números");
-    } else if (data["edad"] < 18) {
-      error["edad"] = "La edad debe ser mayor o igual a 18 años";
+    if(!this.validatorService.required(data["cubiculo"])){
+      error["cubiculo"] = this.errorService.required;
     }
 
-    if(!this.validatorService.required(data["telefono"])){
-      error["telefono"] = this.errorService.required;
+    if(!this.validatorService.required(data["area_investigacion"])){
+      error["area_investigacion"] = this.errorService.required;
     }
 
-    if(!this.validatorService.required(data["ocupacion"])){
-      error["ocupacion"] = this.errorService.required;
+    if(!this.validatorService.required(data["materias_json"]) || data["materias_json"].length === 0){
+      error["materias_json"] = this.errorService.required;
     }
-
     //Return arreglo
     return error;
   }
 
   //Aquí van los servicios HTTP
-  //Servicio para registrar un nuevo usuario
-  public registrarAdmin (data: any): Observable <any>{
+  //Servicio para registrar un nuevo maestro
+  public registrarMaestro(data: any): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers = new HttpHeaders;
     if (token) {
@@ -113,25 +116,24 @@ export class AdministradoresService {
     } else {
       headers = new HttpHeaders({'Content-Type': 'application/json'});
     }
-    return this.http.post<any>(`${environment.url_api}/admin/`,data, { headers });
+    return this.http.post<any>(`${environment.url_api}/maestro/`, data, { headers });
   }
 
-  // Petición para obtener la lista de administradores
-  public obtenerListaAdmins(): Observable<any> {
+  //Servicio para obtener la lista de maestros
+  public obtenerListaMaestros(): Observable<any>{
+    // Verificamos si existe el token de sesión
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
       headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
     } else {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
-
     }
-    return this.http.get<any>(`${environment.url_api}/lista-admins/`, { headers });
+    return this.http.get<any>(`${environment.url_api}/lista-maestros/`, { headers });
   }
 
   // Petición para obtener un administrador por su ID
-  public obtenerAdminPorID(idAdmin: number): Observable<any> {
+  public obtenerMaestroPorID(idMaestro: number): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
@@ -140,11 +142,11 @@ export class AdministradoresService {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       console.log("No se encontró el token del usuario");
     }
-    return this.http.get<any>(`${environment.url_api}/admin/?id=${idAdmin}`, { headers });
+    return this.http.get<any>(`${environment.url_api}/maestro/?id=${idMaestro}`, { headers });
   }
 
-  // Petición para actualizar un administrador
-  public actualizarAdmin(data: any): Observable<any> {
+  // Petición para actualizar un alumno
+  public actualizarMaestro(data: any): Observable<any> {
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
@@ -153,32 +155,19 @@ export class AdministradoresService {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       console.log("No se encontró el token del usuario");
     }
-    return this.http.put<any>(`${environment.url_api}/admin/`, data, { headers });
+    return this.http.put<any>(`${environment.url_api}/maestro/`, data, { headers });
   }
 
-  // Petición para eliminar un administrador
-  public eliminarAdmin(idAdmin: number): Observable<any> {
+  //Servicio para eliminar un maestro
+  public eliminarMaestro(idMaestro: number): Observable<any>{
+    // Verificamos si existe el token de sesión
     const token = this.facadeService.getSessionToken();
     let headers: HttpHeaders;
     if (token) {
       headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
     } else {
       headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
     }
-    return this.http.delete<any>(`${environment.url_api}/admin/?id=${idAdmin}`, { headers });
-  }
-
-  // Servicio para obtener el total de usuarios registrados por rol
-  public getTotalUsuarios(): Observable<any>{
-    const token = this.facadeService.getSessionToken();
-    let headers: HttpHeaders;
-    if (token) {
-      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
-    } else {
-      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      console.log("No se encontró el token del usuario");
-    }
-    return this.http.get<any>(`${environment.url_api}/total-usuarios/`, { headers });
+    return this.http.delete<any>(`${environment.url_api}/maestro/?id=${idMaestro}`, { headers });
   }
 }

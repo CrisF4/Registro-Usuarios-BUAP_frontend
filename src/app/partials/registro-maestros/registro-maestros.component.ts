@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { Location } from '@angular/common';
+import { MaestrosService } from 'src/app/services/maestros.service';
 
 @Component({
   selector: 'app-registro-maestros',
@@ -50,12 +51,44 @@ export class RegistroMaestrosComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private location : Location,
+    private location: Location,
     public activatedRoute: ActivatedRoute,
-    private facadeService: FacadeService
+    private facadeService: FacadeService,
+    private maestrosService: MaestrosService
   ) { }
 
   ngOnInit(): void {
+    //El primer if valida si existe un parámetro en la URL
+    if(this.activatedRoute.snapshot.params['id'] != undefined){
+      this.editar = true;
+      //Asignamos a nuestra variable global el valor del ID que viene por la URL
+      this.idUser = this.activatedRoute.snapshot.params['id'];
+      console.log("ID User: ", this.idUser);
+      //Al iniciar la vista asignamos los datos del user
+      this.maestro = this.datos_user;
+
+      // Parsear materias_json si viene como string
+      if (this.maestro.materias_json && typeof this.maestro.materias_json === 'string') {
+        try {
+          this.maestro.materias_json = JSON.parse(this.maestro.materias_json);
+        } catch (error) {
+          console.error("Error al parsear materias_json:", error);
+          this.maestro.materias_json = [];
+        }
+      }
+
+      // Asegurar que materias_json sea un array
+      if (!Array.isArray(this.maestro.materias_json)) {
+        this.maestro.materias_json = [];
+      }
+    }else{
+      this.maestro = this.maestrosService.esquemaMaestro();
+      this.maestro.rol = this.rol;
+      this.token = this.facadeService.getSessionToken();
+      this.maestro.materias_json = [];
+    }
+    //Imprimir datos en consola
+    console.log("Maestro: ", this.maestro);
   }
 
   public regresar(){
@@ -63,11 +96,72 @@ export class RegistroMaestrosComponent implements OnInit {
   }
 
   public registrar(){
+    this.errors = {};
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      console.error("Errores de validación:", this.errors);
+      return false;
+    }
+    // Validar si las contraseñas coinciden
+    if(this.maestro.password != this.maestro.confirmar_password){
+      alert('Las contraseñas no coinciden');
+      this.maestro.password = "";
+      this.maestro.confirmar_password = "";
+      return false;
+    }
 
+    console.log("Datos que se enviarán al backend:", this.maestro);
+
+    // Consumir servicio para registrar maestros
+    this.maestrosService.registrarMaestro(this.maestro).subscribe({
+      next: (response: any) => {
+        //Aquí va la ejecución del servicio si todo es correcto
+        alert('Maestro registrado con éxito');
+        console.log("Maestro registrado", response);
+
+        //Validar si se registro que entonces navegue a la lista de maestros
+        if(this.token && this.token != ""){
+          this.router.navigate(['maestros']);
+        }else{
+          this.router.navigate(['/']);
+        }
+      },
+      error: (error: any) => {
+        console.error("Error completo:", error);
+        console.error("Status:", error.status);
+        console.error("Mensaje:", error.message);
+        console.error("Error body:", error.error);
+
+        if(error.status === 422){
+          this.errors = error.error.errors;
+        } else {
+          alert('Error al registrar el maestro. Revisa la consola para más detalles.');
+        }
+      }
+    });
   }
 
   public actualizar(){
-
+    // Validación de los datos
+    this.errors = {};
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return false;
+    }
+    // Ejecutamos el servicio de actualización
+    this.maestrosService.actualizarMaestro(this.maestro).subscribe(
+      (response) => {
+        // Redirigir o mostrar mensaje de éxito
+        alert("Maestro actualizado exitosamente");
+        console.log("Maestro actualizado: ", response);
+        this.router.navigate(["maestros"]);
+      },
+      (error) => {
+        // Manejar errores de la API
+        alert("Error al actualizar maestro");
+        console.error("Error al actualizar maestro: ", error);
+      }
+    );
   }
 
   //Funciones para password
@@ -141,6 +235,41 @@ export class RegistroMaestrosComponent implements OnInit {
       !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
       !(charCode >= 97 && charCode <= 122) && // Letras minúsculas
       charCode !== 32                         // Espacio
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  // Función para campos solo numéricos
+  public soloNumeros(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir solo números (0-9)
+    if (!(charCode >= 48 && charCode <= 57)) {
+      event.preventDefault();
+    }
+  }
+
+  // Función para RFC (solo letras y números)
+  public soloLetrasRFC(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir solo letras mayúsculas (A-Z), minúsculas (a-z) y números (0-9)
+    if (
+      !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
+      !(charCode >= 97 && charCode <= 122) &&  // Letras minúsculas
+      !(charCode >= 48 && charCode <= 57)     // Números
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  // Función para CURP (alfanumérico)
+  public alfanumerico(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir solo letras mayúsculas (A-Z), minúsculas (a-z) y números (0-9)
+    if (
+      !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
+      !(charCode >= 97 && charCode <= 122) &&  // Letras minúsculas
+      !(charCode >= 48 && charCode <= 57)     // Números
     ) {
       event.preventDefault();
     }

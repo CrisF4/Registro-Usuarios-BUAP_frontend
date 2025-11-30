@@ -25,11 +25,32 @@ import {MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+
+//Paginación
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+//Sorting
+import { MatSortModule } from '@angular/material/sort';
+//Para el paginator en español
+import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
+// IMPORTANTE: añade el módulo de Sidenav
+import { MatSidenavModule } from '@angular/material/sidenav';
 //Ngx-cookie-service
 import { CookieService } from 'ngx-cookie-service';
+//Modulo para graficas
+import { NgChartsModule } from 'ng2-charts';
 
 // Third Party Modules
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { HomeScreenComponent } from './screens/home-screen/home-screen.component';
+import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.component';
+import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
+import { AdminsScreenComponent } from './screens/admins-screen/admins-screen.component';
+import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
+import { SidebarUserComponent } from './partials/sidebar-user/sidebar-user.component';
+import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
+import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +61,15 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     DashboardLayoutComponent,
     RegistroAdminComponent,
     RegistroAlumnosComponent,
-    RegistroMaestrosComponent
+    RegistroMaestrosComponent,
+    HomeScreenComponent,
+    AlumnosScreenComponent,
+    MaestrosScreenComponent,
+    AdminsScreenComponent,
+    NavbarUserComponent,
+    SidebarUserComponent,
+    EliminarUserModalComponent,
+    GraficasScrenComponent
   ],
   imports: [
     BrowserModule,
@@ -58,11 +87,18 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatNativeDateModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatPaginatorModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule,
+    NgChartsModule
   ],
   providers: [
     CookieService,
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
     provideNgxMask()
   ],
   bootstrap: [AppComponent]

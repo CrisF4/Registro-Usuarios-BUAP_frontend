@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -58,6 +59,25 @@ export class FacadeService {
 
   }
 
+  // Llamada al API para login
+  // NO se pueden mandar datos por separado en post, se manda un objeto parseado a json.
+  public login(username: string, password: string){
+    let data = {
+      "username": username,
+      "password": password
+    };
+    console.log("Intentando login con datos: ", data);
+    return this.http.post<any>(`${environment.url_api}/login/`, data, httpOptions);
+  }
+
+  // Cerrar sesión
+  public logout(): Observable<any> {
+    let headers: any;
+    let token = this.getSessionToken();
+    headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ token});
+    return this.http.get<any>(`${environment.url_api}/logout/`, {headers:headers});
+  }
+
   // Funciones para utilizar las cookies en web
   retrieveSignedUser(){
     var headers: any;
@@ -80,6 +100,7 @@ export class FacadeService {
   }
 
   saveUserData(user_data: any) {
+    console.log("Datos recibidos en saveUserData:", user_data);
     var secure = environment.url_api.indexOf("https") !== -1;
     // Soporta respuesta plana o anidada en 'user'
     let id = user_data.id || user_data.user?.id;
@@ -87,6 +108,7 @@ export class FacadeService {
     let first_name = user_data.first_name || user_data.user?.first_name || '';
     let last_name = user_data.last_name || user_data.user?.last_name || '';
     let name = (first_name + " " + last_name).trim();
+    console.log("Nombre completo guardado:", name);
     this.cookieService.set(user_id_cookie_name, id, undefined, undefined, undefined, secure, secure ? "None" : "Lax");
     this.cookieService.set(user_email_cookie_name, email, undefined, undefined, undefined, secure, secure ? "None" : "Lax");
     this.cookieService.set(user_complete_name_cookie_name, name, undefined, undefined, undefined, secure, secure ? "None" : "Lax");

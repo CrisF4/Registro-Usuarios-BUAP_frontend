@@ -29,6 +29,30 @@ export class LoginScreenComponent implements OnInit {
     if(Object.keys(this.errors).length > 0){
       return false;
     }
+    this.load = true;
+    this.facadeService.login(this.username, this.password).subscribe(
+      (response:any) => {
+        // Guardar token en localStorage (cookies)
+        this.facadeService.saveUserData(response);
+        // Redirigir segun su rol
+        const role = response.rol;
+        if(role === 'admin'){
+          this.router.navigate(['/admin']);
+        } else if(role === 'maestro'){
+          this.router.navigate(['/maestros']);
+        } else if(role === 'alumno'){
+          this.router.navigate(['/alumnos']);
+        } else {
+          this.router.navigate(["home"]);
+        }
+        this.load = false;
+      },
+      (error:any) => {
+        this.load = false;
+        alert("Error en el inicio de sesión: " + error.message);
+        this.errors.general = "Credenciales incorrectas. Inténtalo de nuevo.";
+      }
+    )
   }
 
   public showPassword(){
