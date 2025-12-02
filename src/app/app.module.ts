@@ -14,6 +14,7 @@ import { RegistroAdminComponent } from './partials/registro-admin/registro-admin
 import { RegistroAlumnosComponent } from './partials/registro-alumnos/registro-alumnos.component';
 import { RegistroMaestrosComponent } from './partials/registro-maestros/registro-maestros.component';
 
+
 //Angular Material
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -50,6 +51,7 @@ import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.
 import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
 import { AdminsScreenComponent } from './screens/admins-screen/admins-screen.component';
 import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
+import { SidebarUserComponent } from './partials/sidebar-user/sidebar-user.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.component';
 import { RegistroEventosComponent } from './partials/registro-eventos/registro-eventos.component';
@@ -72,6 +74,7 @@ import { RegistroEventosScreenComponent } from './screens/registro-eventos-scree
     MaestrosScreenComponent,
     AdminsScreenComponent,
     NavbarUserComponent,
+    SidebarUserComponent,
     EliminarUserModalComponent,
     GraficasScrenComponent,
     RegistroEventosComponent,
