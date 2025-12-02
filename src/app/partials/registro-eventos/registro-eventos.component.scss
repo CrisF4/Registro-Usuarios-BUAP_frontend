@@ -28,6 +28,22 @@
 .mat-input {
   width: 100%;
   margin-bottom: 0.5rem;
+
+  // Estilos para el icono del timepicker
+  mat-icon {
+    cursor: pointer;
+    color: #667eea;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #5568d3;
+    }
+  }
+
+  // Input readonly con cursor pointer
+  input[readonly] {
+    cursor: pointer;
+  }
 }
 
 .mat-hint-margin {
@@ -60,6 +76,34 @@
 
     mat-checkbox {
       margin-bottom: 0.5rem;
+    }
+  }
+}
+
+// Estilos para checkboxes de público objetivo (igual que materias en maestros)
+.select-publico-objetivo {
+  margin-bottom: 1.5rem;
+
+  .title-publico {
+    display: block;
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .checkbox-item {
+      margin-bottom: 0.5rem;
+
+      .d-checkbox-nombre {
+        font-size: 0.95rem;
+        color: #333;
+      }
     }
   }
 }

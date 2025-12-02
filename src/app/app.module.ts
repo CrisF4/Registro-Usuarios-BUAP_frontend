@@ -40,6 +40,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { CookieService } from 'ngx-cookie-service';
 //Modulo para graficas
 import { NgChartsModule } from 'ng2-charts';
+//Modulo para timepicker con reloj analógico
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 // Third Party Modules
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
@@ -48,7 +50,6 @@ import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.
 import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
 import { AdminsScreenComponent } from './screens/admins-screen/admins-screen.component';
 import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
-import { SidebarUserComponent } from './partials/sidebar-user/sidebar-user.component';
 import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
 import { GraficasScrenComponent } from './screens/graficas-scren/graficas-scren.component';
 import { RegistroEventosComponent } from './partials/registro-eventos/registro-eventos.component';
@@ -71,7 +72,6 @@ import { RegistroEventosScreenComponent } from './screens/registro-eventos-scree
     MaestrosScreenComponent,
     AdminsScreenComponent,
     NavbarUserComponent,
-    SidebarUserComponent,
     EliminarUserModalComponent,
     GraficasScrenComponent,
     RegistroEventosComponent,
@@ -101,7 +101,8 @@ import { RegistroEventosScreenComponent } from './screens/registro-eventos-scree
     MatTableModule,
     MatSortModule,
     MatDialogModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     CookieService,

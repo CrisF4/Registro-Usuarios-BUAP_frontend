@@ -67,6 +67,24 @@ export class EventosAcademicosScreenComponent implements OnInit {
     this.eventosService.getEventos().subscribe(
       (response) => {
         console.log("Eventos obtenidos:", response);
+
+        // Parsear publico_objetivo si viene como string
+        response.forEach((evento: any) => {
+          if (evento.publico_objetivo && typeof evento.publico_objetivo === 'string') {
+            try {
+              evento.publico_objetivo = JSON.parse(evento.publico_objetivo);
+            } catch (error) {
+              console.error("Error al parsear publico_objetivo:", error);
+              evento.publico_objetivo = [];
+            }
+          }
+
+          // Asegurar que sea un array
+          if (!Array.isArray(evento.publico_objetivo)) {
+            evento.publico_objetivo = [];
+          }
+        });
+
         // Filtrar eventos según el rol
         const eventosFiltrados = this.filtrarEventosPorRol(response);
         this.dataSource.data = eventosFiltrados;
