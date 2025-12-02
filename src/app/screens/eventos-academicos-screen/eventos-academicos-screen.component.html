@@ -2,10 +2,6 @@
   <div class="section-eventos">
     <div class="header-eventos">
       <h2 class="title">Eventos Académicos</h2>
-      <button *ngIf="rol === 'administrador'" mat-raised-button color="primary" (click)="goToRegistro()">
-        <mat-icon>add</mat-icon>
-        Nuevo Evento
-      </button>
     </div>
 
     <div class="filter-section">
@@ -16,6 +12,7 @@
       </mat-form-field>
     </div>
 
+    <!-- Contenedor de tabla de eventos -->
     <div class="table-container">
       <table mat-table [dataSource]="dataSource" matSort class="eventos-table">
 
@@ -92,15 +89,18 @@
         <!-- Fila cuando no hay datos -->
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-            No se encontraron eventos que coincidan con "{{input.value}}"
+            No se encontraron eventos disponibles.
           </td>
         </tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+      <!-- Colocamos la paginación de la tabla -->
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                      showFirstLastButtons
                      aria-label="Seleccionar página de eventos">
       </mat-paginator>
     </div>
+    <!-- Final de tabla de eventos -->
+
   </div>
 </div>

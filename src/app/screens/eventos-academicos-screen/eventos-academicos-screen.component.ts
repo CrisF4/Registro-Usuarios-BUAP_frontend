@@ -152,8 +152,4 @@ export class EventosAcademicosScreenComponent implements OnInit {
       }
     });
   }
-
-  public goToRegistro() {
-    this.router.navigate(['/registro-eventos']);
-  }
 }

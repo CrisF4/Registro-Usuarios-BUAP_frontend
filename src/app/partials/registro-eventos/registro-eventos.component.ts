@@ -252,10 +252,16 @@ export class RegistroEventosComponent implements OnInit {
         console.log('Evento obtenido:', response);
         this.evento = response;
 
-        // Parsear publico_objetivo si viene como string desde el backend (igual que materias_json)
+        // Parsear publico_objetivo si viene como string desde el backend
+        // El backend puede devolver un string JSON doblemente codificado
         if (this.evento.publico_objetivo && typeof this.evento.publico_objetivo === 'string') {
           try {
-            this.evento.publico_objetivo = JSON.parse(this.evento.publico_objetivo);
+            let parsed = JSON.parse(this.evento.publico_objetivo);
+            // Si después del primer parse sigue siendo string, parsear de nuevo
+            if (typeof parsed === 'string') {
+              parsed = JSON.parse(parsed);
+            }
+            this.evento.publico_objetivo = parsed;
           } catch (error) {
             console.error('Error al parsear publico_objetivo:', error);
             this.evento.publico_objetivo = [];
@@ -267,10 +273,43 @@ export class RegistroEventosComponent implements OnInit {
           this.evento.publico_objetivo = [];
         }
 
-        // Convertir fecha si viene en formato ISO
+        // FIX: Convertir fecha sin perder un día (usar fecha local, no UTC)
         if (this.evento.fecha_realizacion) {
-          this.evento.fecha_realizacion = new Date(this.evento.fecha_realizacion);
+          // En lugar de new Date() que usa UTC, usar la fecha como string local
+          const [year, month, day] = this.evento.fecha_realizacion.split('-');
+          this.evento.fecha_realizacion = new Date(Number(year), Number(month) - 1, Number(day));
         }
+
+        // FIX: Convertir hora_inicio de formato HH:mm:ss a HH:mm (que espera el timepicker)
+        if (this.evento.hora_inicio) {
+          // Si viene en formato HH:mm:ss, quitar los segundos
+          if (this.evento.hora_inicio.length === 8) { // "02:00:00" tiene 8 caracteres
+            this.evento.hora_inicio = this.evento.hora_inicio.substring(0, 5); // "02:00"
+          }
+        } else {
+          this.evento.hora_inicio = '';
+        }
+
+        // FIX: Convertir hora_fin de formato HH:mm:ss a HH:mm (que espera el timepicker)
+        if (this.evento.hora_fin) {
+          // Si viene en formato HH:mm:ss, quitar los segundos
+          if (this.evento.hora_fin.length === 8) { // "05:00:00" tiene 8 caracteres
+            this.evento.hora_fin = this.evento.hora_fin.substring(0, 5); // "05:00"
+          }
+        } else {
+          this.evento.hora_fin = '';
+        }
+
+        // FIX: Asegurar que programa_educativo esté disponible
+        if (!this.evento.programa_educativo) {
+          this.evento.programa_educativo = '';
+        }
+
+        console.log('Evento procesado:', this.evento);
+        console.log('Público objetivo:', this.evento.publico_objetivo);
+        console.log('Fecha procesada:', this.evento.fecha_realizacion);
+        console.log('Hora inicio:', this.evento.hora_inicio);
+        console.log('Hora fin:', this.evento.hora_fin);
       },
       (error) => {
         console.error('Error al obtener evento:', error);

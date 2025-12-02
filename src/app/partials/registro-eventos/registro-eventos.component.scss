@@ -6,7 +6,8 @@
 }
 
 .section-registro {
-  max-width: 800px;
+  max-width: 1400px; // Expandido para desktop (antes: 800px)
+  width: 95%; // Ocupa el 95% del ancho disponible
   margin: 0 auto;
   background: white;
   border-radius: 12px;
@@ -15,14 +16,28 @@
 }
 
 .body-registro {
-  padding: 2rem;
+  padding: 2rem 3rem; // Más padding horizontal en desktop
 }
 
 .title-user {
-  font-size: 1.5rem;
+  font-size: 1.75rem; // Título más grande en desktop
   font-weight: 600;
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+// Organizar los campos en 2 columnas en desktop
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-row-single {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 0.5rem;
 }
 
 .mat-input {
@@ -151,12 +166,23 @@
     padding: 1rem;
   }
 
+  .section-registro {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .body-registro {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .title-user {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  // En móvil, los campos van en una sola columna
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
 
   .section-buttons {
@@ -165,5 +191,16 @@
     .btn {
       width: 100%;
     }
+  }
+}
+
+// Media query para tablet (ajuste intermedio)
+@media (min-width: 769px) and (max-width: 1024px) {
+  .section-registro {
+    max-width: 95%;
+  }
+
+  .body-registro {
+    padding: 2rem;
   }
 }
