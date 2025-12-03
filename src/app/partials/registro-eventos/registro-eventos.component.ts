@@ -18,7 +18,7 @@ export class RegistroEventosComponent implements OnInit {
   public idEvento: number = 0;
   public token: string = "";
 
-  // Opciones para selects (valores coinciden con CharField del backend Django)
+  // Opciones para selects
   public programasEducativos: any[] = [
     {value: 'Ingeniería en Ciencias de la Computación', viewValue:'Ingeniería en Ciencias de la Computación'},
     {value: 'Licenciatura en Ciencias de la Computación', viewValue:'Licenciatura en Ciencias de la Computación'},
@@ -34,7 +34,7 @@ export class RegistroEventosComponent implements OnInit {
 
   public responsables: any[] = [];
 
-  // Opciones de público objetivo (checkboxes - igual que materias en maestros)
+  // Opciones de público objetivo
   public publicosObjetivo: any[] = [
     {value: 'Estudiantes', nombre: 'Estudiantes'},
     {value: 'Profesores', nombre: 'Profesores'},
@@ -73,7 +73,7 @@ export class RegistroEventosComponent implements OnInit {
     // Cargar lista de responsables (maestros y administradores)
     this.obtenerResponsables();
 
-    // Verificar si es modo edición (igual que en maestros)
+    // Verificar si es modo edición
     if (this.activatedRoute.snapshot.params['id'] != undefined) {
       this.editar = true;
       this.idEvento = this.activatedRoute.snapshot.params['id'];
@@ -81,7 +81,7 @@ export class RegistroEventosComponent implements OnInit {
       // Cargar datos del evento
       this.obtenerEvento();
     } else {
-      // Inicializar con esquema vacío del servicio (igual que maestros)
+      // Inicializar con esquema vacío del servicio
       this.evento = this.eventosService.esquemaEvento();
       this.token = this.facadeService.getSessionToken();
       this.evento.publico_objetivo = []; // Array vacío para checkboxes
@@ -93,12 +93,12 @@ export class RegistroEventosComponent implements OnInit {
     // Limpiar errores
     this.errors = {};
 
-    // Convertir fecha a formato YYYY-MM-DD si es un objeto Date (igual que changeFecha en maestros)
+    // Convertir fecha a formato YYYY-MM-DD si es un objeto Date
     if (this.evento.fecha_realizacion instanceof Date) {
       this.evento.fecha_realizacion = this.evento.fecha_realizacion.toISOString().split('T')[0];
     }
 
-    // Validar evento usando el servicio (igual que maestros)
+    // Validar evento usando el servicio
     this.errors = this.eventosService.validarEvento(this.evento, this.editar);
     if (Object.keys(this.errors).length > 0) {
       console.error('Errores de validación:', this.errors);
@@ -113,7 +113,7 @@ export class RegistroEventosComponent implements OnInit {
 
     console.log('Datos que se enviarán al backend:', eventoParaEnviar);
 
-    // Consumir servicio para registrar evento (igual que maestros)
+    // Consumir servicio para registrar evento
     this.eventosService.registrarEvento(eventoParaEnviar).subscribe({
       next: (response: any) => {
         alert('Evento registrado con éxito');
@@ -162,7 +162,7 @@ export class RegistroEventosComponent implements OnInit {
       publico_objetivo: JSON.stringify(this.evento.publico_objetivo)
     };
 
-    // Ejecutar servicio de actualización (igual que maestros)
+    // Ejecutar servicio de actualización
     this.eventosService.actualizarEvento(this.idEvento, eventoParaEnviar).subscribe(
       (response) => {
         alert('Evento actualizado exitosamente');
@@ -176,7 +176,7 @@ export class RegistroEventosComponent implements OnInit {
     );
   }
 
-  // Agregar métodos para manejar checkboxes (igual que en maestros con materias_json)
+  // Agregar métodos para manejar checkboxes
   public checkboxChange(event: any) {
     console.log('Evento: ', event);
     if (event.checked) {
