@@ -13,43 +13,43 @@ export class GraficasScrenComponent implements OnInit {
 
   public total_user: any = {};
 
-  //Histograma
-  lineChartData = {
-    labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    datasets: [
-      {
-        data:[89, 34, 43, 54, 28, 74, 93],
-        label: 'Registro de materias',
-        backgroundColor: '#F88406'
-      }
-    ]
-  }
-  lineChartOption = {
-    responsive:false
-  }
-  lineChartPlugins = [ DatalabelsPlugin ];
+  // Histograma
+  // lineChartData = {
+  //   labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  //   datasets: [
+  //     {
+  //       data:[89, 34, 43, 54, 28, 74, 93],
+  //       label: 'Registro de materias',
+  //       backgroundColor: '#F88406'
+  //     }
+  //   ]
+  // }
+  // lineChartOption = {
+  //   responsive:false
+  // }
+  // lineChartPlugins = [ DatalabelsPlugin ];
 
-  //Barras
-  barChartData = {
-    labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
-    datasets: [
-      {
-        data:[34, 43, 54, 28, 74],
-        label: 'Eventos Académicos',
-        backgroundColor: [
-          '#F88406',
-          '#FCFF44',
-          '#82D3FB',
-          '#FB82F5',
-          '#2AD84A'
-        ]
-      }
-    ]
-  }
-  barChartOption = {
-    responsive:false
-  }
-  barChartPlugins = [ DatalabelsPlugin ];
+  // Barras
+  // barChartData = {
+  //   labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
+  //   datasets: [
+  //     {
+  //       data:[34, 43, 54, 28, 74],
+  //       label: 'Eventos Académicos',
+  //       backgroundColor: [
+  //         '#F88406',
+  //         '#FCFF44',
+  //         '#82D3FB',
+  //         '#FB82F5',
+  //         '#2AD84A'
+  //       ]
+  //     }
+  //   ]
+  // }
+  // barChartOption = {
+  //   responsive:false
+  // }
+  // barChartPlugins = [ DatalabelsPlugin ];
 
   //Circular
   pieChartData = {

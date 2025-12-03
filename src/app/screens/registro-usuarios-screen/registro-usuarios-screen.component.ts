@@ -101,7 +101,6 @@ export class RegistroUsuariosScreenComponent implements OnInit {
       );
 
     }else if(this.rol == "maestro"){
-      // TODO: Implementar lógica para obtener maestro por ID
       this.maestrosService.obtenerMaestroPorID(this.idUser).subscribe(
         (response) => {
           this.user = response;
@@ -118,7 +117,6 @@ export class RegistroUsuariosScreenComponent implements OnInit {
         }
       );
     }else if(this.rol == "alumno"){
-      // TODO: Implementar lógica para obtener alumno por ID
       this.alumnosService.obtenerAlumnoPorID(this.idUser).subscribe(
         (response) => {
           this.user = response;

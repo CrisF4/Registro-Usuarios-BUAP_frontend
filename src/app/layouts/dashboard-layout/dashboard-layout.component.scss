@@ -3,51 +3,44 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
 }
+
 .dashboard-body {
   display: flex;
   flex: 1;
   min-height: 0;
-  width: 100vw;
+  width: 100%;
+  padding-top: 56px; // Espacio para el navbar superior
 }
-// Remove black background
+
 // Consistent card style for all dashboard screens
 .dashboard-content {
   flex: 1;
-  padding: 2rem;
+  padding: 0;
   background: var(--background-main, #f4f7fb);
   overflow-y: auto;
+  overflow-x: hidden;
   min-width: 0;
   min-height: calc(100vh - 56px);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  width: 100%;
+  margin-left: 220px; // Espacio para el sidebar en desktop
+  transition: margin-left 0.3s ease;
 }
-@media (max-width: 992px) {
-  .dashboard-body {
-    flex-direction: column;
-    width: 100vw;
-  }
-}
-
-
-// ...existing code...
 
 @media (max-width: 992px) {
   .dashboard-body {
     flex-direction: column;
     width: 100vw;
+    padding-top: 56px;
   }
+
   .dashboard-content {
-    padding: 1rem;
+    padding: 0;
+    margin-left: 0; // Sin margen en móvil (sidebar oculto)
+    width: 100vw;
     background: var(--background-main, #f4f7fb);
     min-height: calc(100vh - 56px);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    overflow-x: hidden;
   }
 }

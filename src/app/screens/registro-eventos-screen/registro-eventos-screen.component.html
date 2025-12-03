@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <div class="section-home">
+    <div class="body-home">
+      <!-- Solo admin puede registrar eventos -->
+      <section *ngIf="rol === 'administrador'">
+        <app-registro-eventos></app-registro-eventos>
+      </section>
+
+      <!-- Mensaje para otros roles -->
+      <section *ngIf="rol !== 'administrador'" class="access-denied">
+        <mat-icon>lock</mat-icon>
+        <h2>Acceso Restringido</h2>
+        <p>Solo los administradores pueden registrar eventos académicos.</p>
+      </section>
+    </div>
+  </div>
+</div>

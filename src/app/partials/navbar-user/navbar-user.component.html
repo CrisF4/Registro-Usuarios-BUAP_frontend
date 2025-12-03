@@ -23,16 +23,29 @@
         <span class="material-icons">bar_chart</span>
         <span>Gráficas</span>
       </li>
-      <li *ngIf="canSeeTeacherItems()" routerLink="/materias" routerLinkActive="active"
+
+      <!-- <li *ngIf="canSeeTeacherItems()" routerLink="/materias" routerLinkActive="active"
         class="scoop-navbar-item">
         <span class="material-icons">library_books</span>
         <span>Materias</span>
-      </li>
-      <li *ngIf="canSeeTeacherItems()" routerLink="/eventos-academicos" routerLinkActive="active"
-        class="scoop-navbar-item">
+      </li> -->
+
+      <li *ngIf="canSeeTeacherItems() || canSeeStudentItems()" class="scoop-navbar-item dropdown-item" (click)="toggleEventosDropdown()">
         <span class="material-icons">event</span>
         <span>Eventos Académicos</span>
+        <span class="material-icons dropdown-icon">{{ eventosDropdownOpen ? 'expand_less' : 'expand_more' }}</span>
       </li>
+      <!-- Submenu de Eventos Académicos -->
+      <ul class="submenu" *ngIf="eventosDropdownOpen">
+        <li *ngIf="canSeeAdminItems()" routerLink="/registro-eventos" routerLinkActive="active" class="scoop-navbar-item submenu-item" (click)="closeSidebar()">
+          <span class="material-icons">add_circle</span>
+          <span>Registro de Eventos</span>
+        </li>
+        <li routerLink="/eventos-academicos" routerLinkActive="active" class="scoop-navbar-item submenu-item" (click)="closeSidebar()">
+          <span class="material-icons">list</span>
+          <span>Lista de Eventos</span>
+        </li>
+      </ul>
     </ul>
     <button class="scoop-logout-btn" (click)="logout()">
       <span class="material-icons">logout</span>
@@ -68,7 +81,7 @@
           <span class="material-icons">admin_panel_settings</span>
           <span>Admins</span>
         </li>
-        <li *ngIf="canSeeAdminItems()" routerLink="/maestros" routerLinkActive="active" class="scoop-navbar-item"
+        <li *ngIf="canSeeAdminItems() || canSeeTeacherItems()" routerLink="/maestros" routerLinkActive="active" class="scoop-navbar-item"
           (click)="closeSidebar()">
           <span class="material-icons">people</span>
           <span>Maestros</span>
@@ -83,16 +96,29 @@
           <span class="material-icons">bar_chart</span>
           <span>Gráficas</span>
         </li>
-        <li *ngIf="canSeeTeacherItems()" routerLink="/materias" routerLinkActive="active"
+
+        <!-- <li *ngIf="canSeeTeacherItems()" routerLink="/materias" routerLinkActive="active"
           class="scoop-navbar-item" (click)="closeSidebar()">
           <span class="material-icons">library_books</span>
           <span>Materias</span>
-        </li>
-        <li *ngIf="canSeeTeacherItems()" routerLink="/eventos-academicos" routerLinkActive="active"
-          class="scoop-navbar-item" (click)="closeSidebar()">
+        </li> -->
+
+        <li *ngIf="canSeeTeacherItems() || canSeeStudentItems()" class="scoop-navbar-item dropdown-item" (click)="toggleEventosDropdown()">
           <span class="material-icons">event</span>
           <span>Eventos Académicos</span>
+          <span class="material-icons dropdown-icon">{{ eventosDropdownOpen ? 'expand_less' : 'expand_more' }}</span>
         </li>
+        <!-- Submenu de Eventos Académicos -->
+        <ul class="submenu" *ngIf="eventosDropdownOpen">
+          <li *ngIf="canSeeAdminItems()" routerLink="/registro-eventos" routerLinkActive="active" class="scoop-navbar-item submenu-item" (click)="closeSidebar()">
+            <span class="material-icons">add_circle</span>
+            <span>Registro de Eventos</span>
+          </li>
+          <li routerLink="/eventos-academicos" routerLinkActive="active" class="scoop-navbar-item submenu-item" (click)="closeSidebar()">
+            <span class="material-icons">list</span>
+            <span>Lista de Eventos</span>
+          </li>
+        </ul>
       </ul>
       <button class="scoop-logout-btn" (click)="logout(); closeSidebar()">
         <span class="material-icons">logout</span>

@@ -1,0 +1,106 @@
+<div class="wrapper">
+  <div class="section-eventos">
+    <div class="header-eventos">
+      <h2 class="title">Eventos Académicos</h2>
+    </div>
+
+    <div class="filter-section">
+      <mat-form-field class="filter-input" appearance="outline">
+        <mat-label>Buscar evento</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar por nombre..." #input>
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Contenedor de tabla de eventos -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="eventos-table">
+
+        <!-- Columna Nombre del Evento -->
+        <ng-container matColumnDef="nombre_evento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Evento </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.nombre_evento}} </td>
+        </ng-container>
+
+        <!-- Columna Tipo de Evento -->
+        <ng-container matColumnDef="tipo_evento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.tipo_evento}} </td>
+        </ng-container>
+
+        <!-- Columna Fecha -->
+        <ng-container matColumnDef="fecha_realizacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.fecha_realizacion | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Columna Horario -->
+        <ng-container matColumnDef="horario">
+          <th mat-header-cell *matHeaderCellDef> Horario </th>
+          <td mat-cell *matCellDef="let evento">
+            {{evento.hora_inicio}} - {{evento.hora_fin}}
+          </td>
+        </ng-container>
+
+        <!-- Columna Lugar -->
+        <ng-container matColumnDef="lugar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Lugar </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.lugar}} </td>
+        </ng-container>
+
+        <!-- Columna Público Objetivo -->
+        <ng-container matColumnDef="publico_objetivo">
+          <th mat-header-cell *matHeaderCellDef> Público Objetivo </th>
+          <td mat-cell *matCellDef="let evento">
+            <span class="publico-chip" *ngFor="let publico of evento.publico_objetivo">
+              {{publico}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Columna Responsable -->
+        <ng-container matColumnDef="responsable">
+          <th mat-header-cell *matHeaderCellDef> Responsable </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.responsable_nombre}} </td>
+        </ng-container>
+
+        <!-- Columna Cupo Máximo -->
+        <ng-container matColumnDef="cupo_maximo">
+          <th mat-header-cell *matHeaderCellDef> Cupo </th>
+          <td mat-cell *matCellDef="let evento"> {{evento.cupo_maximo}} </td>
+        </ng-container>
+
+        <!-- Columna Acciones (solo para admin) -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let evento">
+            <button mat-icon-button color="primary" (click)="editarEvento(evento)" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarEvento(evento)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Fila cuando no hay datos -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            No se encontraron eventos disponibles.
+          </td>
+        </tr>
+      </table>
+
+      <!-- Colocamos la paginación de la tabla -->
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                     showFirstLastButtons
+                     aria-label="Seleccionar página de eventos">
+      </mat-paginator>
+    </div>
+    <!-- Final de tabla de eventos -->
+
+  </div>
+</div>

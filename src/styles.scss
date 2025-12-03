@@ -219,3 +219,56 @@ p, span, label, input, button {
     background: darken($color-primary, 10%);
   }
 }
+
+// ==========================================
+// NGX-MATERIAL-TIMEPICKER CUSTOM STYLES
+// ==========================================
+.timepicker-overlay {
+  z-index: 10000 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 9999 !important;
+}
+
+// Personalización del contenedor del timepicker
+.timepicker {
+  font-family: $font-main !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+// Personalización del reloj analógico
+.clock-face__clock-hand {
+  background-color: #667eea !important;
+}
+
+.clock-face__clock-hand::after {
+  background-color: #667eea !important;
+}
+
+.clock-face__clock-hand::before {
+  border-color: #667eea !important;
+}
+
+// Números activos del reloj
+.clock-face__number > span.active {
+  background-color: #667eea !important;
+  color: white !important;
+}
+
+// Botones del timepicker
+.timepicker-button {
+  color: #667eea !important;
+  font-family: $font-main !important;
+  font-weight: 500 !important;
+}
+
+// Estilo para el input de tiempo
+.timepicker-dial__item {
+  font-family: $font-main !important;
+}
+
+.timepicker-dial__control {
+  font-family: $font-main !important;
+}

@@ -2,18 +2,6 @@
    admin-screen.scss (completo)
    ========================= */
 
-/* Compensa el sidebar en desktop */
-.main-content-admin {
-  margin-left: 220px;
-  transition: margin-left 0.3s;
-}
-
-@media (max-width: 991px) {
-  .main-content-admin {
-    margin-left: 0;
-  }
-}
-
 .wrapper {
   height: auto;
 }

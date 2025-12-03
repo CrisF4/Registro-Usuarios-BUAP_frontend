@@ -48,12 +48,13 @@
   transition: margin 0.3s cubic-bezier(.4, 0, .2, 1);
 }
 
+// dimensiones para la vista de desktop
 .scoop-side-navbar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  width: 220px;
+  width: 200px; // original: 200px
   z-index: 101;
   background: var(--sidebar-bg);
   color: #e4ecfa;
@@ -173,6 +174,18 @@
   border-radius: 8px;
   margin-bottom: 0.3rem;
   transition: background 0.18s, color 0.18s;
+
+  // Permitir que el texto se divida en múltiples líneas
+  flex-wrap: wrap;           // Permite que los elementos hijos hagan wrap
+  white-space: normal;       // Permite saltos de línea en el texto
+  word-break: break-word;    // Rompe palabras largas si es necesario
+  line-height: 1.3;          // Espaciado entre líneas más compacto
+
+  span:not(.material-icons):not(.dropdown-icon) {
+    flex: 1;                 // El texto ocupa el espacio disponible
+    white-space: normal;     // Permite saltos de línea
+    word-break: break-word;  // Rompe palabras si es necesario
+  }
 }
 
 .scoop-navbar-item.active,
@@ -186,11 +199,77 @@
   font-size: 1.2em;
   color: #b5c6e0;
   transition: color 0.18s;
+  flex-shrink: 0; //El icono no se encoge
 }
 
 .scoop-navbar-item.active .material-icons,
 .scoop-navbar-item:hover .material-icons {
   color: #fff;
+}
+
+// Dropdown styling
+.scoop-navbar-item.dropdown-item {
+  position: relative;
+  cursor: pointer;
+
+  .dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 1rem; // Posiciona el icono en la parte superior
+    font-size: 1.1em;
+    transition: transform 0.3s ease;
+    flex-shrink: 0; // El icono no se encoge
+  }
+  // Espacio para el icono dropdown a la derecha
+  padding-right: 2.5rem !important;
+}
+
+// Submenu styling
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.3rem 0;
+  background: #1a2c48;
+  border-radius: 8px;
+  overflow: hidden;
+  animation: slideDown 0.3s ease;
+}
+
+.submenu-item {
+  padding: 0.9rem 1.2rem 0.9rem 3rem !important;
+  font-size: 1rem !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+
+  // Permitir wrap en items del submenu también
+  flex-wrap: wrap;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
+
+  &:first-child {
+    border-radius: 8px 8px 0 0 !important;
+  }
+
+  &:last-child {
+    border-radius: 0 0 8px 8px !important;
+  }
+
+  &:only-child {
+    border-radius: 8px !important;
+  }
+}
+
+// Animación para el dropdown
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .scoop-navbar-badge {
@@ -270,7 +349,7 @@
     flex-direction: column;
     height: auto;
   }
-
+  // dimensiones para la vista móvil
   .scoop-side-navbar {
     width: 85vw;
     max-width: 320px;

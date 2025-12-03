@@ -5,14 +5,14 @@
 $sidebar-width: 220px;
 
 /* Sidebar visible en desktop */
-.main-content-graficas {
-  margin-left: $sidebar-width;
-  transition: margin-left 0.3s ease;
+// .main-content-graficas {
+//   margin-left: $sidebar-width;
+//   transition: margin-left 0.3s ease;
 
-  @media (max-width: 991px) {
-    margin-left: 0;
-  }
-}
+//   @media (max-width: 991px) {
+//     margin-left: 0;
+//   }
+// }
 
 .wrapper {
   min-height: 100vh;

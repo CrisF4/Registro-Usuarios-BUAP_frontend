@@ -15,6 +15,7 @@ export class NavbarUserComponent implements OnInit {
   public showUserMenu: boolean = false;
   public mobileOpen: boolean = false;
   public userRole: string = '';
+  public eventosDropdownOpen: boolean = false;
 
   // Estas variables se utilizarán por si se habilita el tema oscuro
   paletteMode: 'light' | 'dark' = 'light';
@@ -105,6 +106,10 @@ export class NavbarUserComponent implements OnInit {
 
   closeMenu() {
     this.expandedMenu = null;
+  }
+
+  toggleEventosDropdown() {
+    this.eventosDropdownOpen = !this.eventosDropdownOpen;
   }
 
   logout() {
