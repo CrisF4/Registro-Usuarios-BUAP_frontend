@@ -6,6 +6,10 @@ import { FacadeService } from './facade.service';
 import { ValidatorService } from './tools/validator.service';
 import { ErrorsService } from './tools/errors.service';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +22,7 @@ export class EventosService {
     private errorService: ErrorsService
   ) { }
 
-  // Esquema inicial del evento académico (siguiendo el patrón de maestros)
+  // Esquema inicial del evento académico
   public esquemaEvento() {
     return {
       'nombre_evento': '',
@@ -27,7 +31,7 @@ export class EventosService {
       'hora_inicio': '',
       'hora_fin': '',
       'lugar': '',
-      'publico_objetivo': [], // Array vacío para checkboxes (igual que materias_json)
+      'publico_objetivo': [],
       'programa_educativo': '',
       'responsable': '',
       'descripcion': '',
@@ -35,7 +39,7 @@ export class EventosService {
     };
   }
 
-  // Validación del evento académico (siguiendo el patrón de maestros)
+  // Validación del evento académico
   public validarEvento(data: any, editar: boolean) {
     console.log('Validando evento...', data);
     let error: any = {};
@@ -77,7 +81,7 @@ export class EventosService {
       error['lugar'] = this.errorService.required;
     }
 
-    // Validar público objetivo (al menos un checkbox seleccionado - igual que materias_json)
+    // Validar público objetivo (al menos un checkbox seleccionado)
     if (!this.validatorService.required(data['publico_objetivo']) || data['publico_objetivo'].length === 0) {
       error['publico_objetivo'] = 'Debe seleccionar al menos un público objetivo';
     }
@@ -111,49 +115,80 @@ export class EventosService {
     return error;
   }
 
-  private getHeaders(): HttpHeaders {
+  // Servicios HTTP
+  // Servicio para obtener todos los eventos
+  public obtenerListaEventos(): Observable<any> {
+    // Verificamos si existe el token de sesión
     const token = this.facadeService.getSessionToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    });
-  }
-
-  // Obtener todos los eventos
-  public getEventos(): Observable<any> {
-    const headers = this.getHeaders();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
     return this.http.get<any>(`${environment.url_api}/eventos-academicos/`, { headers });
   }
 
-  // Obtener un evento por ID
-  public getEventoById(id: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get<any>(`${environment.url_api}/evento-academico/?id=${id}`, { headers });
+  // Petición para obtener un evento por su ID
+  public obtenerEventoPorID(idEvento: number): Observable<any> {
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      console.log("No se encontró el token del usuario");
+    }
+    return this.http.get<any>(`${environment.url_api}/evento-academico/?id=${idEvento}`, { headers });
   }
 
-  // Registrar un nuevo evento
-  public registrarEvento(evento: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(`${environment.url_api}/evento-academico/`, evento, { headers });
+  // Servicio para registrar un nuevo evento
+  public registrarEvento(data: any): Observable<any> {
+    const token = this.facadeService.getSessionToken();
+    let headers = new HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token});
+    } else {
+      headers = new HttpHeaders({'Content-Type': 'application/json'});
+    }
+    return this.http.post<any>(`${environment.url_api}/evento-academico/`, data, { headers });
   }
 
-  // Actualizar un evento existente
-  public actualizarEvento(id: number, evento: any): Observable<any> {
-    const headers = this.getHeaders();
-    // Agregar el ID al objeto evento para el PUT
-    const eventoConId = { ...evento, id: id };
-    return this.http.put<any>(`${environment.url_api}/evento-academico/`, eventoConId, { headers });
+  // Petición para actualizar un evento
+  public actualizarEvento(data: any): Observable<any> {
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      console.log("No se encontró el token del usuario");
+    }
+    return this.http.put<any>(`${environment.url_api}/evento-academico/`, data, { headers });
   }
 
-  // Eliminar un evento
-  public eliminarEvento(id: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.delete<any>(`${environment.url_api}/evento-academico/?id=${id}`, { headers });
+  // Servicio para eliminar un evento
+  public eliminarEvento(idEvento: number): Observable<any> {
+    // Verificamos si existe el token de sesión
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
+    return this.http.delete<any>(`${environment.url_api}/evento-academico/?id=${idEvento}`, { headers });
   }
 
-  // Obtener maestros y administradores para el select de responsables
-  public getMaestrosYAdministradores(): Observable<any> {
-    const headers = this.getHeaders();
+  // Servicio para obtener maestros y administradores (responsables)
+  public obtenerMaestrosYAdministradores(): Observable<any> {
+    const token = this.facadeService.getSessionToken();
+    let headers: HttpHeaders;
+    if (token) {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+    } else {
+      headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
     // Hacemos dos peticiones y las combinamos
     return new Observable((observer) => {
       Promise.all([
