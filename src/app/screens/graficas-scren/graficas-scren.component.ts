@@ -14,42 +14,42 @@ export class GraficasScrenComponent implements OnInit {
   public total_user: any = {};
 
   // Histograma
-  // lineChartData = {
-  //   labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  //   datasets: [
-  //     {
-  //       data:[89, 34, 43, 54, 28, 74, 93],
-  //       label: 'Registro de materias',
-  //       backgroundColor: '#F88406'
-  //     }
-  //   ]
-  // }
-  // lineChartOption = {
-  //   responsive:false
-  // }
-  // lineChartPlugins = [ DatalabelsPlugin ];
+  lineChartData = {
+    labels: ["Administradores", "Maestros", "Alumnos"],
+    datasets: [
+      {
+        data:[0, 0, 0],
+        label: 'Registro de usuarios',
+        backgroundColor: '#F88406',
+        borderColor: '#F88406',
+        fill: false
+      }
+    ]
+  }
+  lineChartOption = {
+    responsive:false
+  }
+  lineChartPlugins = [ DatalabelsPlugin ];
 
   // Barras
-  // barChartData = {
-  //   labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
-  //   datasets: [
-  //     {
-  //       data:[34, 43, 54, 28, 74],
-  //       label: 'Eventos Académicos',
-  //       backgroundColor: [
-  //         '#F88406',
-  //         '#FCFF44',
-  //         '#82D3FB',
-  //         '#FB82F5',
-  //         '#2AD84A'
-  //       ]
-  //     }
-  //   ]
-  // }
-  // barChartOption = {
-  //   responsive:false
-  // }
-  // barChartPlugins = [ DatalabelsPlugin ];
+  barChartData = {
+    labels: ["Administradores", "Maestros", "Alumnos"],
+    datasets: [
+      {
+        data:[0, 0, 0],
+        label: 'Registro de usuarios',
+        backgroundColor: [
+          '#F88406',
+          '#FCFF44',
+          '#82D3FB'
+        ]
+      }
+    ]
+  }
+  barChartOption = {
+    responsive:false
+  }
+  barChartPlugins = [ DatalabelsPlugin ];
 
   //Circular
   pieChartData = {
@@ -106,6 +106,44 @@ export class GraficasScrenComponent implements OnInit {
       (response)=>{
         this.total_user = response;
         console.log("Total usuarios: ", this.total_user);
+
+        // Actualizar gráfica de histograma con datos dinámicos
+        this.lineChartData = {
+          labels: ["Administradores", "Maestros", "Alumnos"],
+          datasets: [
+            {
+              data: [
+                this.total_user.admins || 0,
+                this.total_user.maestros || 0,
+                this.total_user.alumnos || 0
+              ],
+              label: 'Registro de usuarios',
+              backgroundColor: '#F88406',
+              borderColor: '#F88406',
+              fill: false
+            }
+          ]
+        };
+
+        // Actualizar gráfica de barras con datos dinámicos
+        this.barChartData = {
+          labels: ["Administradores", "Maestros", "Alumnos"],
+          datasets: [
+            {
+              data: [
+                this.total_user.admins || 0,
+                this.total_user.maestros || 0,
+                this.total_user.alumnos || 0
+              ],
+              label: 'Registro de usuarios',
+              backgroundColor: [
+                '#F88406',
+                '#FCFF44',
+                '#82D3FB'
+              ]
+            }
+          ]
+        };
 
         // Actualizar gráfica circular con datos dinámicos
         this.pieChartData = {

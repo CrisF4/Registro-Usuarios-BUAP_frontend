@@ -8,41 +8,40 @@
           <span class="title-perfil">Análisis De Datos Del Sistema</span>
         </div>
       </div>
-      <!-- <div class="container">
-        Título de la primera sección de gráficas
-        <div class="row mt-3 mb-5" style="text-align: center;">
-          <div class="col-12">
-            <div class="alert alert-primary" role="alert">
-              <span class="title-table">Análisis De Eventos Académicos</span>
-            </div>
+      <!-- Gráficas de histograma y barras - primera sección -->
+      <div class="row mt-3 mb-5" style="text-align: center;">
+        <div class="col-12">
+          <div class="alert alert-primary" role="alert">
+            <span class="title-table">Análisis De Usuarios - Histograma y Barras</span>
           </div>
         </div>
-         Gráficas de materias registradas
-        <div class="graph-section">
-          <div class="graph">
-            Se muestra la gráfica tipo histograma de los eventos académicos registrados en el sistema.
-            <canvas
-              baseChart
-              type="line"
-              [data]="lineChartData"
-              [plugins]="lineChartPlugins"
-              [options]="lineChartOption"></canvas>
-          </div>
-          <div class="graph">
-            Se muestra la gráfica tipo barras de los eventos académicos registrados en el sistema.
-            <canvas
-              baseChart
-              type="bar"
-              [data]="barChartData"
-              [plugins]="barChartPlugins"
-              [options]="barChartOption"></canvas>
-          </div>
-      </div> -->
+      </div>
+      <!-- Gráficas de histograma y barras -->
+      <div class="user-section">
+        <div class="graph">
+          <!-- Se muestra la gráfica tipo histograma de los usuarios registrados en el sistema. -->
+          <canvas
+            baseChart
+            type="line"
+            [data]="lineChartData"
+            [plugins]="lineChartPlugins"
+            [options]="lineChartOption"></canvas>
+        </div>
+        <div class="graph">
+          <!-- Se muestra la gráfica tipo barras de los usuarios registrados en el sistema. -->
+          <canvas
+            baseChart
+            type="bar"
+            [data]="barChartData"
+            [plugins]="barChartPlugins"
+            [options]="barChartOption"></canvas>
+        </div>
+      </div>
       <!-- Gráficas de usuarios - segunda sección de gráficas -->
       <div class="row mt-3 mb-5" style="text-align: center;">
         <div class="col-12">
           <div class="alert alert-primary" role="alert">
-            <span class="title-table">Análisis De Usuarios</span>
+            <span class="title-table">Análisis De Usuarios - Circular y Dona</span>
           </div>
         </div>
       </div>
