@@ -162,8 +162,11 @@ export class RegistroEventosComponent implements OnInit {
       publico_objetivo: JSON.stringify(this.evento.publico_objetivo)
     };
 
+    // Preparar datos para actualización con ID incluido
+    eventoParaEnviar.id = this.idEvento;
+
     // Ejecutar servicio de actualización
-    this.eventosService.actualizarEvento(this.idEvento, eventoParaEnviar).subscribe(
+    this.eventosService.actualizarEvento(eventoParaEnviar).subscribe(
       (response) => {
         alert('Evento actualizado exitosamente');
         console.log('Evento actualizado: ', response);
@@ -212,7 +215,7 @@ export class RegistroEventosComponent implements OnInit {
 
   public obtenerResponsables() {
     // Obtener maestros y administradores como responsables
-    this.eventosService.getMaestrosYAdministradores().subscribe(
+    this.eventosService.obtenerMaestrosYAdministradores().subscribe(
       (response) => {
         // El backend devuelve arrays separados de maestros y admins
         // Los combinamos en un solo array
@@ -247,7 +250,7 @@ export class RegistroEventosComponent implements OnInit {
   }
 
   public obtenerEvento() {
-    this.eventosService.getEventoById(this.idEvento).subscribe(
+    this.eventosService.obtenerEventoPorID(this.idEvento).subscribe(
       (response) => {
         console.log('Evento obtenido:', response);
         this.evento = response;

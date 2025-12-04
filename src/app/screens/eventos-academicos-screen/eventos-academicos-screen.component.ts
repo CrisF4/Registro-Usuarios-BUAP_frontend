@@ -14,7 +14,7 @@ import { EliminarEventoModalComponent } from 'src/app/modals/eliminar-evento-mod
   styleUrls: ['./eventos-academicos-screen.component.scss']
 })
 export class EventosAcademicosScreenComponent implements OnInit {
-
+  public name_user: string = "";
   public rol: string = "";
   public dataSource: MatTableDataSource<any>;
   public displayedColumns: string[] = [];
@@ -32,6 +32,7 @@ export class EventosAcademicosScreenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.name_user = this.facadeService.getUserCompleteName();
     this.rol = this.facadeService.getUserGroup();
     this.setDisplayedColumns();
     this.obtenerEventos();
@@ -40,6 +41,21 @@ export class EventosAcademicosScreenComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  // Verificar si el usuario puede editar un evento específico
+  public puedeEditarEvento(evento: any): boolean {
+    const userIdSession = Number(this.facadeService.getUserId());
+    // Administrador puede editar cualquier evento
+    if (this.rol === 'administrador') {
+      return true;
+    }
+    return false;
+  }
+  // Verificar si el usuario puede eliminar un evento específico
+  public puedeEliminarEvento(evento: any): boolean {
+    // Solo administradores pueden eliminar eventos
+    return this.rol === 'administrador';
   }
 
   public setDisplayedColumns() {
@@ -51,6 +67,7 @@ export class EventosAcademicosScreenComponent implements OnInit {
       'horario',
       'lugar',
       'publico_objetivo',
+      'programa_educativo',
       'responsable',
       'cupo_maximo'
     ];
@@ -64,7 +81,7 @@ export class EventosAcademicosScreenComponent implements OnInit {
   }
 
   public obtenerEventos() {
-    this.eventosService.getEventos().subscribe(
+    this.eventosService.obtenerListaEventos().subscribe(
       (response) => {
         console.log("Eventos obtenidos:", response);
 
@@ -82,6 +99,11 @@ export class EventosAcademicosScreenComponent implements OnInit {
           // Asegurar que sea un array
           if (!Array.isArray(evento.publico_objetivo)) {
             evento.publico_objetivo = [];
+          }
+
+          // Establecer valor por defecto para programa_educativo
+          if (!evento.programa_educativo || evento.programa_educativo.trim() === '') {
+            evento.programa_educativo = 'No especificado';
           }
         });
 
@@ -126,29 +148,34 @@ export class EventosAcademicosScreenComponent implements OnInit {
   }
 
   public editarEvento(evento: any) {
+    // Validar permisos antes de navegar
+    if (!this.puedeEditarEvento(evento)) {
+      alert("No tienes permisos para editar este evento.");
+      return;
+    }
     console.log("Editando evento:", evento);
     this.router.navigate(['/registro-eventos', evento.id]);
   }
 
   public eliminarEvento(evento: any) {
+    // Validar permisos antes de abrir el modal
+    if (!this.puedeEliminarEvento(evento)) {
+      alert("No tienes permisos para eliminar este evento.");
+      return;
+    }
+
     const dialogRef = this.dialog.open(EliminarEventoModalComponent, {
       width: '400px',
-      data: { nombre_evento: evento.nombre_evento }
+      data: { id: evento.id, nombre_evento: evento.nombre_evento }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.eventosService.eliminarEvento(evento.id).subscribe(
-          (response) => {
-            console.log("Evento eliminado:", response);
-            alert("Evento eliminado correctamente");
-            this.obtenerEventos(); // Recargar la lista
-          },
-          (error) => {
-            console.error("Error al eliminar evento:", error);
-            alert("No se pudo eliminar el evento");
-          }
-        );
+      if (result.isDelete) {
+        console.log("Evento eliminado");
+        alert("Evento eliminado correctamente");
+        this.obtenerEventos(); // Recargar la lista
+      } else {
+        console.log("No se eliminó el evento");
       }
     });
   }

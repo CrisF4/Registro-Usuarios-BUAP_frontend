@@ -1,23 +1,38 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventosService } from 'src/app/services/eventos.service';
 
 @Component({
   selector: 'app-eliminar-evento-modal',
   templateUrl: './eliminar-evento-modal.component.html',
   styleUrls: ['./eliminar-evento-modal.component.scss']
 })
-export class EliminarEventoModalComponent {
+export class EliminarEventoModalComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<EliminarEventoModalComponent>,
+    private eventosService: EventosService,
+    private dialogRef: MatDialogRef<EliminarEventoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-  onNoClick(): void {
-    this.dialogRef.close(false);
+  ngOnInit(): void {
+    
   }
 
-  onConfirm(): void {
-    this.dialogRef.close(true);
+  public cerrar_modal(): void {
+    this.dialogRef.close({isDelete: false});
+  }
+
+  public eliminarEvento(): void {
+    this.eventosService.eliminarEvento(this.data.id).subscribe(
+      (response) => {
+        console.log(response);
+        this.dialogRef.close({isDelete: true});
+      },
+      (error) => {
+        console.error("Error al eliminar evento:", error);
+        this.dialogRef.close({isDelete: false});
+      }
+    );
   }
 }
