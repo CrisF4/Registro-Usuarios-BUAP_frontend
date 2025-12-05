@@ -37,13 +37,13 @@ export class RegistroEventosComponent implements OnInit {
   // Opciones de público objetivo
   public publicosObjetivo: any[] = [
     {value: 'Estudiantes', nombre: 'Estudiantes'},
-    {value: 'Profesores', nombre: 'Profesores'},
+    {value: 'Maestros', nombre: 'Maestros'},
     {value: 'Público general', nombre: 'Público general'}
   ];
 
   public fechaMinima = new Date(); // Para el datepicker
 
-  // Tema personalizado para el timepicker (colores modernos)
+  // Tema personalizado para el timepicker
   public timePickerTheme: NgxMaterialTimepickerTheme = {
     container: {
       bodyBackgroundColor: '#fff',
@@ -135,7 +135,7 @@ export class RegistroEventosComponent implements OnInit {
         if (error.status === 422) {
           this.errors = error.error.errors;
         } else {
-          alert('Error al registrar el evento. Revisa la consola para más detalles.');
+          alert('Error al registrar el evento.');
         }
       }
     });
@@ -276,14 +276,14 @@ export class RegistroEventosComponent implements OnInit {
           this.evento.publico_objetivo = [];
         }
 
-        // FIX: Convertir fecha sin perder un día (usar fecha local, no UTC)
+        // Convertir fecha sin perder un día (usar fecha local, no UTC)
         if (this.evento.fecha_realizacion) {
           // En lugar de new Date() que usa UTC, usar la fecha como string local
           const [year, month, day] = this.evento.fecha_realizacion.split('-');
           this.evento.fecha_realizacion = new Date(Number(year), Number(month) - 1, Number(day));
         }
 
-        // FIX: Convertir hora_inicio de formato HH:mm:ss a HH:mm (que espera el timepicker)
+        // Convertir hora_inicio de formato HH:mm:ss a HH:mm (que espera el timepicker)
         if (this.evento.hora_inicio) {
           // Si viene en formato HH:mm:ss, quitar los segundos
           if (this.evento.hora_inicio.length === 8) { // "02:00:00" tiene 8 caracteres
@@ -293,7 +293,7 @@ export class RegistroEventosComponent implements OnInit {
           this.evento.hora_inicio = '';
         }
 
-        // FIX: Convertir hora_fin de formato HH:mm:ss a HH:mm (que espera el timepicker)
+        // Convertir hora_fin de formato HH:mm:ss a HH:mm (que espera el timepicker)
         if (this.evento.hora_fin) {
           // Si viene en formato HH:mm:ss, quitar los segundos
           if (this.evento.hora_fin.length === 8) { // "05:00:00" tiene 8 caracteres
@@ -303,7 +303,7 @@ export class RegistroEventosComponent implements OnInit {
           this.evento.hora_fin = '';
         }
 
-        // FIX: Asegurar que programa_educativo esté disponible
+        // Asegurar que programa_educativo esté disponible
         if (!this.evento.programa_educativo) {
           this.evento.programa_educativo = '';
         }
@@ -325,7 +325,7 @@ export class RegistroEventosComponent implements OnInit {
     this.location.back();
   }
 
-  // Función para detectar el cambio de fecha (igual que en maestros)
+  // Función para detectar el cambio de fecha
   public changeFecha(event: any) {
     console.log(event);
     console.log(event.value.toISOString());

@@ -198,7 +198,6 @@ export class RegistroMaestrosComponent implements OnInit {
     console.log("Fecha: ", this.maestro.fecha_nacimiento);
   }
 
-
   // Funciones para los checkbox
   public checkboxChange(event:any){
     console.log("Evento: ", event);
