@@ -123,9 +123,9 @@ export class EventosAcademicosScreenComponent implements OnInit {
       // Admin ve todos los eventos
       return eventos;
     } else if (this.rol === 'maestro') {
-      // Maestro ve eventos para profesores y público general
+      // Maestro ve eventos para Maestros y público general
       return eventos.filter(evento =>
-        evento.publico_objetivo.includes('Profesores') ||
+        evento.publico_objetivo.includes('Maestros') ||
         evento.publico_objetivo.includes('Público general')
       );
     } else if (this.rol === 'alumno') {
